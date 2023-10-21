@@ -1,0 +1,32 @@
+{
+    "nodes" : [
+        {
+            "name" : "Broker01",
+            "type" : "MQTT",
+            "userID": "wolfSSL",
+            "password" : "myPassword",
+            "CAcert": "wolfSSL_CA.pem",
+            "channels" : [ "ch01" ]
+        },
+        {
+            "name": "board_pub",
+            "type": "board",
+            "GPIO": [ "GP15" ]
+        },
+        {
+            "name": "board_sub",
+            "type": "board",
+            "GPIO": [ "GP14" ]
+        }
+    ],
+    "wires" : [
+        {
+            "from": "board_pub.GP15",
+            "to": "Broker01.ch01.00"
+        },
+        {
+            "from": "Broker01.ch01.00",
+            "to": "board_sub.GP14"
+        }
+    ]
+}
