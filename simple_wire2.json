@@ -1,32 +1,46 @@
 {
-    "nodes" : [
+    "nodes": [
         {
-            "name" : "Broker01",
-            "type" : "MQTT",
+            "name": "Broker01",
+            "type": "MQTT",
             "userID": "wolfSSL",
-            "password" : "myPassword",
+            "password": "myPassword",
             "CAcert": "wolfSSL_CA.pem",
-            "channels" : [ "ch01" ]
+            "topic": [
+                "tp01",
+                "tp02"
+            ]
         },
         {
-            "name": "board_pub",
+            "name": "board_A",
             "type": "board",
-            "GPIO": [ "GP15" ]
+            "GPIO": [
+                "GP15"
+            ]
         },
         {
-            "name": "board_sub",
+            "array": "board_B", // board_B is an array that can be refered by board_B[]
             "type": "board",
-            "GPIO": [ "GP14" ]
+            "GPIO": [
+                "GP14"
+            ],
+            "I2C": [
+                "I2C0"
+            ]
         }
     ],
-    "wires" : [
+    "wires": [
         {
-            "from": "board_pub.GP15",
-            "to": "Broker01.ch01.00"
+            "from": "board_A.GP15",
+            "to": "Broker01.tp01.00"
         },
         {
-            "from": "Broker01.ch01.00",
-            "to": "board_sub.GP14"
+            "from": "Broker01.tp01.00",
+            "to": "board_B[].GP14"
+        }
+        { // This topic is published by outside of the scope of wolfWire
+            "from": "Broker01.tp02.",
+            "to": "board_B[].I2C0"
         }
     ]
 }
